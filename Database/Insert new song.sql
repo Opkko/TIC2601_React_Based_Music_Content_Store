@@ -1,0 +1,39 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewSong`()
+BEGIN
+ INSERT INTO musicdb.artist (Name)
+ SELECT *
+ FROM (SELECT 'NaME') AS tmp
+ WHERE NOT EXISTS (SELECT * FROM artist WHERE Name = 'NaME');
+ 
+CREATE TABLE INPUT(
+ALBUM_TITLE VARCHAR(255), ARTIST_NAME VARCHAR(255),SONG_TITLE VARCHAR(255),UPLOAD_DATE date, ALBUM_PRICE double, SONG_PRICE double, FILE_LOCATION VARCHAR(255));
+
+INSERT INTO INPUT
+VALUES ('This is AlbumTitle','NaME', 'SongTitle',20001011, 22.1, 3, "this is the file location");
+
+
+CREATE TABLE NEWALBUM AS 
+SELECT a.ALBUM_TITLE, a.ARTIST_NAME, a.UPLOAD_DATE, a.ALBUM_PRICE, b.ArtistID FROM input a
+INNER JOIN artist b
+ON b.Name = a.ARTIST_NAME;
+
+INSERT INTO album( Album_Title, ArtistID, Date, Price)
+SELECT b.ALBUM_TITLE, b.ArtistID, b.UPLOAD_DATE, b.ALBUM_PRICE FROM NEWALBUM b;
+
+drop table NEWALBUM;
+
+CREATE TABLE NEWSONG AS
+SELECT a.SONG_TITLE, a.ARTIST_NAME, a.UPLOAD_DATE, a.SONG_PRICE, a.FILE_LOCATION, b.ArtistID, c.AlbumID 
+FROM ((input a
+INNER JOIN artist b ON b.Name = a.ARTIST_NAME)
+INNER JOIN album c ON c.Album_Title = a.ALBUM_TITLE); 
+
+INSERT INTO song (Song_Title, File_Location, Price, AlbumID, ArtistID, Date)
+SELECT a.SONG_TITLE, a.FILE_LOCATION, a.SONG_PRICE, a.AlbumID, a.ArtistID, a.UPLOAD_DATE FROM NEWSONG a;
+
+drop table input;
+drop table newsong;
+
+
+
+END

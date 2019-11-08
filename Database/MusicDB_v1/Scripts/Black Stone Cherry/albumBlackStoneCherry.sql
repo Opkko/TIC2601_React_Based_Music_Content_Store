@@ -1,0 +1,2 @@
+INSERT INTO musicdb.album (ArtistID,Album_Title,Album_Artwork,Date,Price)
+VALUES (18,'Black Stone Cherry - Black To Blues, Vol. 2 (2019)','D:\NUS_STUFF\TIC2601\Songs\Black Stone Cherry - Black To Blues, Vol. 2 (2019)\folder','20191109','6.98');
